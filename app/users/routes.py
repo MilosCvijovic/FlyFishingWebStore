@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from app.users.controller import UserController, EmployeeTypeController, EmployeeController
+from app.users.controller import UserController, EmployeeTypeController, EmployeeController, CustomerController
 from app.users.schemas import *
 from app.users.controller.user_auth_controller import JWTBearer
 
@@ -18,7 +18,7 @@ def create_super_user(user: UserSchemaIn):
 
 
 @user_router.post("/login")
-def login_user(user: UserSchemaIn):
+def login_user(user: UserSchemaLogIn):
     return UserController.login_user(user.email, user.password)
 
 
@@ -96,8 +96,8 @@ def get_all_employees():
     return EmployeeController.get_all_employees()
 
 
-@employee_router.get("/get-employees-by-characters", response_model=list[EmployeeSchema])
-def get_employees_by_characters(first_name):
+@employee_router.get("/get-employees-by-first-name", response_model=list[EmployeeSchema])
+def get_employees_by_first_name(first_name):
     return EmployeeController.get_employees_by_first_name(first_name)
 
 
@@ -108,13 +108,35 @@ def delete_employee_by_id(employee_id: str):
 
 @employee_router.put("/update-employee-by-id", response_model=EmployeeSchema,
                      dependencies=[Depends(JWTBearer("super_user"))])
-def update_employee(
-    employee_id: str,
-    name: str = None,
-    last_name: str = None,
-    user_id: str = None,
-    employee_type_id: str = None,
-):
-    return EmployeeController.update_employee(employee_id, name, last_name, user_id, employee_type_id)
+def update_employee(employee_id: str, first_name: str = None, last_name: str = None, user_id: str = None,
+                    employee_type_id: str = None):
+    return EmployeeController.update_employee(employee_id, first_name, last_name, user_id, employee_type_id)
 
-# TODO add customer router
+
+customer_router = APIRouter(tags=["customer"], prefix="/api/customers")
+
+
+@customer_router.post("/add-new-customer", response_model=CustomerSchema)
+def create_customer(customer: CustomerSchemaIn):
+    return CustomerController.create_customer(customer.first_name, customer.last_name, customer.user_id)
+
+
+@customer_router.get("/id", response_model=CustomerSchema)
+def get_customer_by_id(customer_id: str):
+    return CustomerController.get_customer_by_id(customer_id)
+
+
+@customer_router.get("/get-all-customers", response_model=list[CustomerSchema])
+def get_all_customers():
+    return CustomerController.get_all_customers()
+
+
+@customer_router.delete("/", dependencies=[Depends(JWTBearer("super_user"))])
+def delete_customer_by_id(customer_id: str):
+    return CustomerController.delete_customer_by_id(customer_id)
+
+
+@customer_router.put("/update-customer-by-id", response_model=CustomerSchema,
+                     dependencies=[Depends(JWTBearer("super_user"))])
+def update_employee(customer_id: str, name: str = None, last_name: str = None, user_id: str = None):
+    return CustomerController.update_customer(customer_id, name, last_name, user_id)

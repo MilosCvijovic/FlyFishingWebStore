@@ -46,7 +46,7 @@ class EmployeeRepository:
         :param first_name: The first name of the employees to retrieve.
         :return: A list of Employee instances
         :raises: EmployeeNotFoundException: If no employees are found with the given first name"""
-        employees = self.db.query(Employee).filter(Employee.first_name.like(first_name + "%")).all()
+        employees = self.db.query(Employee).filter(Employee.first_name.like(first_name + " %")).all()
         if employees is None:
             raise EmployeeNotFoundException(f"Employee with provided name: {first_name} not found.", 400)
         return employees
@@ -103,7 +103,7 @@ class EmployeeRepository:
             if employee is None:
                 raise EmployeeNotFoundException(f"Employee with provided ID: {employee_id} not found.", 400)
             if first_name is not None:
-                employee.name = first_name
+                employee.first_name = first_name
             if last_name is not None:
                 employee.last_name = last_name
             if user_id is not None:

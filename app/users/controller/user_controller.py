@@ -63,8 +63,8 @@ class UserController:
         try:
             user = UserServices.login_user(email=email, password=password)
             if user.is_superuser:
-                return signJWT(user.id, "super_user")
-            return signJWT(user.id, "classic_user")
+                return signJWT(user.user_id, "super_user")
+            return signJWT(user.user_id, "classic_user")
         except UserInvalidPassword as e:
             raise HTTPException(status_code=e.code, detail=e.message)
         except Exception as e:

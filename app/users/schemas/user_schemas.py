@@ -42,3 +42,15 @@ class UserSchemaIn(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class UserSchemaLogIn(BaseModel):
+    """UserSchemaIn model defines the structure of a User data for log in input.
+
+    :param email: Email address of the user.
+    :param password: Password of the user."""
+    email: EmailStr
+    password: str
+
+    class Config:
+        orm_mode = True
