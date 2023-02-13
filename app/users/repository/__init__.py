@@ -1,1 +1,4 @@
 from .user_repository import UserRepository
+from .employee_repository import EmployeeRepository
+from .employee_type_repository import EmployeeTypeRepository
+from .customer_repository import CustomerRepository
