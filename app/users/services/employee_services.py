@@ -4,11 +4,9 @@ from app.users.repository.employee_repository import EmployeeRepository
 
 class EmployeeServices:
     @staticmethod
-    def create_employee(first_name, last_name, user_id, employee_type_id):
+    def create_employee(user_id, employee_type_id):
         """Creates an employee in the database.
 
-        :param first_name: The first name of the employee.
-        :param last_name: The last name of the employee.
         :param employee_type_id: The ID of the employee type.
         :param user_id: The ID of the user.
         :return: The ID of the newly created employee.
@@ -16,7 +14,7 @@ class EmployeeServices:
         try:
             with SessionLocal() as db:
                 employee_repository = EmployeeRepository(db)
-                return employee_repository.create_employee(first_name, last_name, user_id, employee_type_id)
+                return employee_repository.create_employee(user_id, employee_type_id)
         except Exception as e:
             raise e
 
@@ -105,7 +103,8 @@ class EmployeeServices:
         try:
             with SessionLocal() as db:
                 employee_repository = EmployeeRepository(db)
-                return employee_repository.update_employee(employee_id, first_name, last_name, user_id,
-                                                           employee_type_id)
+                return employee_repository.update_employee(employee_id=employee_id, first_name=first_name,
+                                                           last_name=last_name, user_id=user_id,
+                                                           employee_type_id=employee_type_id)
         except Exception as e:
             raise e

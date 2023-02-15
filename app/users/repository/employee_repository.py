@@ -1,15 +1,20 @@
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
+from typing import Optional
 
 from app.users.exceptions import *
-from app.users.models import Employee
+from app.users.models import Employee, User
 
 
 class EmployeeRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def create_employee(self, first_name, last_name, user_id, employee_type_id):
+    def get_user(self, user_id: str) -> Optional[User]:
+        user = self.db.query(User).filter(User.user_id == user_id).first()
+        return user
+
+    def create_employee(self, user_id, employee_type_id):
         """Create a new employee in the database.
 
         :param first_name: The first name of the employee
@@ -20,7 +25,8 @@ class EmployeeRepository:
         :return: The created Employee instance
         :raises: IntegrityError: If there is a conflict in the database while creating the employee"""
         try:
-            employee = Employee(first_name, last_name, user_id, employee_type_id)
+            user = self.get_user(user_id)
+            employee = Employee(user.first_name, user.last_name, user_id, employee_type_id)
             self.db.add(employee)
             self.db.commit()
             self.db.refresh(employee)
@@ -46,7 +52,7 @@ class EmployeeRepository:
         :param first_name: The first name of the employees to retrieve.
         :return: A list of Employee instances
         :raises: EmployeeNotFoundException: If no employees are found with the given first name"""
-        employees = self.db.query(Employee).filter(Employee.first_name.like(first_name + " %")).all()
+        employees = self.db.query(Employee).filter(Employee.first_name.like(first_name + "%")).all()
         if employees is None:
             raise EmployeeNotFoundException(f"Employee with provided name: {first_name} not found.", 400)
         return employees
@@ -111,6 +117,16 @@ class EmployeeRepository:
             if employee_type_id is not None:
                 employee.employee_type_id = employee_type_id
             self.db.add(employee)
+
+            if user_id is not None:
+                user = self.get_user(user_id)
+                if user is None:
+                    raise UserNotFoundException(f"User with provided ID: {user_id} not found.", 400)
+                if first_name is not None:
+                    user.first_name = first_name
+                if last_name is not None:
+                    user.last_name = last_name
+                self.db.add(user)
             self.db.commit()
             self.db.refresh(employee)
             return employee

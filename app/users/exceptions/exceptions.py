@@ -33,6 +33,13 @@ class UserNotSuperUser(Exception):
         self.code = code
 
 
+class UserNotFoundException(Exception):
+    """Exception raised when a user does not exist."""
+    def __init__(self, message, code):
+        self.message = message
+        self.code = code
+
+
 class CustomerNotFoundException(Exception):
     """Exception raised when a customer could not be found with the given ID."""
     def __init__(self, message, code):

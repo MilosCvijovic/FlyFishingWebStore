@@ -23,11 +23,8 @@ class CustomerSchema(BaseModel):
 class CustomerSchemaIn(BaseModel):
     """Model to represent the input data to create a customer.
 
-    :param first_name: First name of the customer.
-    :param last_name: Last name of the customer.
     :param user_id: Foreign key reference to the User model."""
-    first_name: str
-    last_name: str
+
     user_id: str
 
     class Config:
