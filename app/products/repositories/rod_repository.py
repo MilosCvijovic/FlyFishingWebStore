@@ -1,8 +1,8 @@
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.products.exceptions import ProductTypeNotFoundException, RodNotFoundException
-from app.products.models import Rod, ProductType
+from app.products.exceptions import ProductTypeNotFoundException, RodNotFoundException, ProductNotFoundException
+from app.products.models import Rod, ProductType, Product
 
 
 class RodRepository:
@@ -14,12 +14,16 @@ class RodRepository:
         :param db: SQLAlchemy session object."""
         self.db = db
 
+    def get_product(self, product_id: str):
+        product = self.db.query(Product).filter(Product.product_id == product_id).first()
+        return product
+
     def create_new_rod(self, brand: str, model: str, length: int, weight: int, AFTM: str, price: int,
-                       quantity: int, description: str, in_stock: bool, product_type_id: str):
+                       quantity: int, description: str, in_stock: bool, product_id: str, product_type_id: str):
         try:
             product_type = self.db.query(ProductType).filter(ProductType.product_type_id == product_type_id).first()
             rod = Rod(brand=brand, model=model, length=length, weight=weight, AFTM=AFTM, price=price,
-                      quantity=quantity, description=description, in_stock=in_stock,
+                      quantity=quantity, description=description, in_stock=in_stock, product_id=product_id,
                       product_type_id=product_type.product_type_id)
             self.db.add(rod)
             self.db.commit()
@@ -60,7 +64,10 @@ class RodRepository:
             rod = self.db.query(Rod).filter(Rod.rod_id == rod_id).first()
             if rod is None:
                 raise RodNotFoundException(f"Rod with provided ID: {rod_id} not found.", 400)
+            product_id = rod.product_id
+            product = self.get_product(product_id)
             self.db.delete(rod)
+            self.db.delete(product)
             self.db.commit()
             return True
         except Exception as e:
@@ -68,7 +75,8 @@ class RodRepository:
 
     def update_rod(self, rod_id: str, brand: str = None, model: str = None, length: int = None,
                         weight: int = None, AFTM: str = None, price: int = None, quantity: int = None,
-                        description: str = None, in_stock: bool = None, product_type_id: str = None):
+                        description: str = None, in_stock: bool = None, product_id: str = None,
+                        product_type_id: str = None):
 
         try:
             rod = self.db.query(Rod).filter(Rod.rod_id == rod_id).first()
@@ -95,6 +103,18 @@ class RodRepository:
             if product_type_id is not None:
                 rod.product_type_id = product_type_id
             self.db.add(rod)
+
+            if product_id is not None:
+                product = self.get_product(product_id)
+                if product in None:
+                    raise ProductNotFoundException(f"Product with provided ID: {product_id} not found.", 400)
+                if brand is not None:
+                    product.brand = brand
+                if model is not None:
+                    product.model = model
+                if price is not None:
+                    product.price = price
+                self.db.add(product)
             self.db.commit()
             self.db.refresh(rod)
             return rod

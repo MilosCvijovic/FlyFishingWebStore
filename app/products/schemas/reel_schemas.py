@@ -6,6 +6,7 @@ from pydantic import UUID4
 
 class ReelSchema(BaseModel):
     reel_id: UUID4
+    product_id: str
     brand: str
     model: str
     weight: Optional[int]
@@ -22,6 +23,7 @@ class ReelSchema(BaseModel):
 
 class ReelSchemaIn(BaseModel):
     product_type_id: str
+    product_id: str
     brand: str
     model: str
     weight: Optional[int]

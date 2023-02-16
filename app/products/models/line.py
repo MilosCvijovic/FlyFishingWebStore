@@ -17,11 +17,14 @@ class Line(Base):
     description = Column(String(250))
     in_stock = Column(Boolean, default=True)
 
+    product_id = Column(String(50), ForeignKey("products.product_id"))
+    product = relationship("Product", lazy="subquery")
+
     product_type_id = Column(String(50), ForeignKey("product_types.product_type_id"))
     product_type = relationship("ProductType", lazy="subquery")
 
     def __init__(self, brand: str, model: str, length: int, AFTM: str, price: int,
-                 quantity: int, description: str, in_stock: bool, product_type_id: str):
+                 quantity: int, description: str, in_stock: bool, product_id: str, product_type_id: str):
         self.brand = brand
         self.model = model
         self.length = length
@@ -30,4 +33,5 @@ class Line(Base):
         self.quantity = quantity
         self.description = description
         self.in_stock = in_stock
+        self.product_id = product_id
         self.product_type_id = product_type_id

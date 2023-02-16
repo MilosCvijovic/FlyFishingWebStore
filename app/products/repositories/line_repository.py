@@ -1,8 +1,8 @@
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.products.exceptions import ProductTypeNotFoundException, LineNotFoundException
-from app.products.models import Line, ProductType
+from app.products.exceptions import ProductTypeNotFoundException, LineNotFoundException, ProductNotFoundException
+from app.products.models import Line, ProductType, Product
 
 
 class LineRepository:
@@ -14,12 +14,16 @@ class LineRepository:
         :param db: SQLAlchemy session object."""
         self.db = db
 
+    def get_product(self, product_id: str):
+        product = self.db.query(Product).filter(Product.product_id == product_id).first()
+        return product
+
     def create_new_line(self, brand: str, model: str, length: int, AFTM: str, price: int,
-                       quantity: int, description: str, in_stock: bool, product_type_id: str):
+                       quantity: int, description: str, in_stock: bool, product_id: str, product_type_id: str):
         try:
             product_type = self.db.query(ProductType).filter(ProductType.product_type_id == product_type_id).first()
             line = Line(brand=brand, model=model, length=length, AFTM=AFTM, price=price,
-                      quantity=quantity, description=description, in_stock=in_stock,
+                      quantity=quantity, description=description, in_stock=in_stock, product_id=product_id,
                       product_type_id=product_type.product_type_id)
             self.db.add(line)
             self.db.commit()
@@ -60,7 +64,10 @@ class LineRepository:
             line = self.db.query(Line).filter(Line.line_id == line_id).first()
             if line is None:
                 raise LineNotFoundException(f"Rod with provided ID: {line_id} not found.", 400)
+            product_id = line.product_id
+            product = self.get_product(product_id)
             self.db.delete(line)
+            self.db.delete(product)
             self.db.commit()
             return True
         except Exception as e:
@@ -68,7 +75,8 @@ class LineRepository:
 
     def update_line(self, line_id: str, brand: str = None, model: str = None, length: int = None,
                         AFTM: str = None, price: int = None, quantity: int = None,
-                        description: str = None, in_stock: bool = None, product_type_id: str = None):
+                        description: str = None, in_stock: bool = None, product_id: str = None,
+                        product_type_id: str = None):
 
         try:
             line = self.db.query(Line).filter(Line.line_id == line_id).first()
@@ -93,6 +101,18 @@ class LineRepository:
             if product_type_id is not None:
                 line.product_type_id = product_type_id
             self.db.add(line)
+
+            if product_id is not None:
+                product = self.get_product(product_id)
+                if product in None:
+                    raise ProductNotFoundException(f"Product with provided ID: {product_id} not found.", 400)
+                if brand is not None:
+                    product.brand = brand
+                if model is not None:
+                    product.model = model
+                if price is not None:
+                    product.price = price
+                self.db.add(product)
             self.db.commit()
             self.db.refresh(line)
             return line

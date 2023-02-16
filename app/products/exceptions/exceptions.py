@@ -31,3 +31,10 @@ class FlyNotFoundException(Exception):
     def __init__(self, message, code):
         self.message = message
         self.code = code
+
+
+class ProductNotFoundException(Exception):
+    """Exception raised when a rod could not be found with the given brand name."""
+    def __init__(self, message, code):
+        self.message = message
+        self.code = code

@@ -10,7 +10,7 @@ class EmployeeRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def get_user(self, user_id: str) -> Optional[User]:
+    def get_user(self, user_id: str):
         user = self.db.query(User).filter(User.user_id == user_id).first()
         return user
 
@@ -26,7 +26,8 @@ class EmployeeRepository:
         :raises: IntegrityError: If there is a conflict in the database while creating the employee"""
         try:
             user = self.get_user(user_id)
-            employee = Employee(user.first_name, user.last_name, user_id, employee_type_id)
+            employee = Employee(first_name=user.first_name, last_name=user.last_name, user_id=user_id,
+                                employee_type_id=employee_type_id)
             self.db.add(employee)
             self.db.commit()
             self.db.refresh(employee)

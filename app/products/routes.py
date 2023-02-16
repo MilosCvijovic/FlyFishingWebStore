@@ -40,7 +40,8 @@ rod_router = APIRouter(tags=["rod"], prefix="/api/rods")
 def create_new_rod(rod: RodSchemaIn):
     return RodController.create_new_rod(product_type_id=rod.product_type_id, brand=rod.brand, model=rod.model,
                                         length=rod.length, weight=rod.weight, AFTM=rod.AFTM, price=rod.price,
-                                        quantity=rod.quantity, description=rod.description, in_stock=rod.in_stock)
+                                        quantity=rod.quantity, description=rod.description, product_id=rod.product_id,
+                                        in_stock=rod.in_stock)
 
 
 @rod_router.get("/id", response_model=RodSchema)
@@ -66,10 +67,10 @@ def delete_rod_by_id(rod_id: str):
 @rod_router.put("/update-rod", response_model=RodSchema)
 def update_rod(rod_id: str, brand: str = None, model: str = None, length: int = None,
                weight: int = None, AFTM: str = None, price: int = None, quantity: int = None,
-               description: str = None, in_stock: bool = None, product_type_id: str = None):
+               description: str = None, in_stock: bool = None, product_id: str = None, product_type_id: str = None):
     return RodController.update_rod(rod_id=rod_id, brand=brand, model=model, length=length,
                                     weight=weight, AFTM=AFTM, price=price, quantity=quantity,
-                                    description=description, in_stock=in_stock,
+                                    description=description, in_stock=in_stock, product_id=product_id,
                                     product_type_id=product_type_id)
 
 
@@ -78,7 +79,8 @@ reel_router = APIRouter(tags=["reel"], prefix="/api/reels")
 
 @reel_router.post("/add-new-reel", response_model=ReelSchema)
 def create_new_reel(reel: ReelSchemaIn):
-    return ReelController.create_new_reel(product_type_id=reel.product_type_id, brand=reel.brand, model=reel.model,
+    return ReelController.create_new_reel(product_type_id=reel.product_type_id, product_id=reel.product_id,
+                                          brand=reel.brand, model=reel.model,
                                           weight=reel.weight, AFTM=reel.AFTM, price=reel.price,
                                           quantity=reel.quantity, description=reel.description, in_stock=reel.in_stock)
 
@@ -106,10 +108,10 @@ def delete_reel_by_id(reel_id: str):
 @reel_router.put("/update-reel", response_model=ReelSchema)
 def update_reel(reel_id: str, brand: str = None, model: str = None,
                 weight: int = None, AFTM: str = None, price: int = None, quantity: int = None,
-                description: str = None, in_stock: bool = None, product_type_id: str = None):
+                description: str = None, in_stock: bool = None, product_id: str = None, product_type_id: str = None):
     return ReelController.update_reel(reel_id=reel_id, brand=brand, model=model,
                                       weight=weight, AFTM=AFTM, price=price, quantity=quantity,
-                                      description=description, in_stock=in_stock,
+                                      description=description, in_stock=in_stock, product_id=product_id,
                                       product_type_id=product_type_id)
 
 
@@ -118,7 +120,8 @@ line_router = APIRouter(tags=["line"], prefix="/api/lines")
 
 @line_router.post("/add-new-line", response_model=LineSchema)
 def create_new_line(line: LineSchemaIn):
-    return LineController.create_new_line(product_type_id=line.product_type_id, brand=line.brand, model=line.model,
+    return LineController.create_new_line(product_type_id=line.product_type_id, product_id=line.product_id,
+                                          brand=line.brand, model=line.model,
                                           length=line.length, AFTM=line.AFTM, price=line.price,
                                           quantity=line.quantity, description=line.description, in_stock=line.in_stock)
 
@@ -146,10 +149,10 @@ def delete_line_by_id(line_id: str):
 @line_router.put("/update-line", response_model=LineSchema)
 def update_line(line_id: str, brand: str = None, model: str = None, length: int = None,
                 AFTM: str = None, price: int = None, quantity: int = None,
-                description: str = None, in_stock: bool = None, product_type_id: str = None):
+                description: str = None, in_stock: bool = None, product_id: str = None, product_type_id: str = None):
     return LineController.update_line(line_id=line_id, brand=brand, model=model, length=length,
                                       AFTM=AFTM, price=price, quantity=quantity,
-                                      description=description, in_stock=in_stock,
+                                      description=description, in_stock=in_stock, product_id=product_id,
                                       product_type_id=product_type_id)
 
 
@@ -158,7 +161,8 @@ fly_router = APIRouter(tags=["fly"], prefix="/api/flies")
 
 @fly_router.post("/add-new-fly", response_model=FlySchema)
 def create_new_fly(fly: FlySchemaIn):
-    return FlyController.create_new_fly(product_type_id=fly.product_type_id, brand=fly.brand, model=fly.model,
+    return FlyController.create_new_fly(product_type_id=fly.product_type_id, product_id=fly.product_id,
+                                        brand=fly.brand, model=fly.model,
                                         length=fly.length, weight=fly.weight, AFTM=fly.AFTM, price=fly.price,
                                         quantity=fly.quantity, description=fly.description, in_stock=fly.in_stock)
 
@@ -186,8 +190,8 @@ def delete_fly_by_id(fly_id: str):
 @fly_router.put("/update-fly", response_model=FlySchema)
 def update_fly(fly_id: str, brand: str = None, model: str = None, length: int = None,
                weight: int = None, AFTM: str = None, price: int = None, quantity: int = None,
-               description: str = None, in_stock: bool = None, product_type_id: str = None):
+               description: str = None, in_stock: bool = None, product_id: str = None, product_type_id: str = None):
     return FlyController.update_fly(fly_id=fly_id, brand=brand, model=model, length=length,
                                     weight=weight, AFTM=AFTM, price=price, quantity=quantity,
-                                    description=description, in_stock=in_stock,
+                                    description=description, in_stock=in_stock, product_id=product_id,
                                     product_type_id=product_type_id)

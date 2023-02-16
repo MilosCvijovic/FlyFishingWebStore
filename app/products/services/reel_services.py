@@ -5,14 +5,14 @@ from app.products.repositories import ReelRepository
 class ReelServices:
     @staticmethod
     def create_new_reel(brand: str, model: str, weight: int, AFTM: str, price: int,
-                        quantity: int, description: str, in_stock: bool, product_type_id: str):
+                        quantity: int, description: str, in_stock: bool, product_id: str, product_type_id: str):
         try:
             with SessionLocal() as db:
                 reel_repository = ReelRepository(db)
                 return reel_repository.create_new_reel(brand=brand, model=model, weight=weight,
                                                        AFTM=AFTM, price=price, quantity=quantity,
                                                        description=description, in_stock=in_stock,
-                                                       product_type_id=product_type_id)
+                                                       product_id=product_id, product_type_id=product_type_id)
         except Exception as e:
             raise e
 
@@ -56,12 +56,13 @@ class ReelServices:
     @staticmethod
     def update_reel(reel_id: str, brand: str = None, model: str = None, weight: int = None, AFTM: str = None,
                     price: int = None, quantity: int = None, description: str = None, in_stock: bool = None,
-                    product_type_id: str = None):
+                    product_id: str = None, product_type_id: str = None):
         try:
             with SessionLocal() as db:
                 reel_repository = ReelRepository(db)
                 return reel_repository.update_reel(reel_id=reel_id, brand=brand, model=model, weight=weight, AFTM=AFTM,
                                                    price=price, quantity=quantity, description=description,
-                                                   in_stock=in_stock, product_type_id=product_type_id)
+                                                   product_id = product_id, in_stock=in_stock,
+                                                   product_type_id=product_type_id)
         except Exception as e:
             raise e

@@ -6,6 +6,7 @@ from pydantic import UUID4
 
 class LineSchema(BaseModel):
     line_id: UUID4
+    product_id: str
     brand: str
     model: str
     length: int
@@ -22,6 +23,7 @@ class LineSchema(BaseModel):
 
 class LineSchemaIn(BaseModel):
     product_type_id: str
+    product_id: str
     brand: str
     model: str
     length: int
