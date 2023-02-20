@@ -11,10 +11,12 @@ class UserRepository:
         :param db: SQLAlchemy session object."""
         self.db = db
 
-    def create_user(self, name: str, email: str, telephone_number: str, password: str, address: str):
+    def create_user(self, first_name: str, last_name: str, email: str, telephone_number: str,
+                    password: str, address: str):
         """Create a new User object.
 
-        :param name: Name of the user.
+        :param first_name: Name of the user.
+        :param last_name: Last name of the user.
         :param email: Email of the user.
         :param telephone_number: Telephone_number of the user.
         :param password: Password of the user.
@@ -22,7 +24,7 @@ class UserRepository:
         :return: The created User object.
         :raises IntegrityError: If the email is already taken."""
         try:
-            user = User(name=name, email=email, telephone_number=telephone_number,
+            user = User(first_name=first_name, last_name=last_name, email=email, telephone_number=telephone_number,
                         password=password, address=address)
             self.db.add(user)
             self.db.commit()
@@ -31,10 +33,11 @@ class UserRepository:
         except IntegrityError as e:
             raise e
 
-    def create_super_user(self, name: str, email: str, telephone_number: str, password: str, address: str):
+    def create_super_user(self, first_name: str, last_name: str, email: str, telephone_number: str, password: str, address: str):
         """Create a new User object with superuser privileges.
 
-        :param name: Name of the user.
+        :param first_name: Name of the user.
+        :param last_name: Last name of the user.
         :param email: Email of the user.
         :param telephone_number: Telephone_number of the user.
         :param password: Password of the user.
@@ -42,7 +45,7 @@ class UserRepository:
         :return: The created User object.
         :raises IntegrityError: If the email is already taken."""
         try:
-            user = User(name=name, email=email, telephone_number=telephone_number,
+            user = User(first_name=first_name, last_name=last_name, email=email, telephone_number=telephone_number,
                         password=password, address=address, is_superuser=True)
             self.db.add(user)
             self.db.commit()

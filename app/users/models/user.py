@@ -6,7 +6,8 @@ from uuid import uuid4
 class User(Base):
     __tablename__ = "users"
     user_id = Column(String(50), primary_key=True, default=uuid4, autoincrement=False)
-    name = Column(String(100))
+    first_name = Column(String(100))
+    last_name = Column(String(100))
     email = Column(String(100), unique=True)
     telephone_number = Column(String(50))
     password = Column(String(100))
@@ -14,8 +15,10 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     is_superuser = Column(Boolean, default=False)
 
-    def __init__(self, name, email, telephone_number, password, address, is_active=True, is_superuser=False):
-        self.name = name
+    def __init__(self, first_name, last_name, email, telephone_number, password, address,
+                 is_active=True, is_superuser=False):
+        self.first_name = first_name
+        self.last_name = last_name
         self.email = email
         self.telephone_number = telephone_number
         self.password = password

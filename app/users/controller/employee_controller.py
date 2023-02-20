@@ -8,7 +8,7 @@ class EmployeeController:
     """The EmployeeController class is responsible for managing the creation of employees."""
 
     @staticmethod
-    def create_employee(first_name, last_name, user_id, employee_type_id):
+    def create_employee(user_id, employee_type_id):
         """Create a new employee.
 
         :param first_name: The first name of the employee.
@@ -22,7 +22,7 @@ class EmployeeController:
                  HTTPException with status code 404 in case the employee type with specified id does not exist."""
         try:
             EmployeeTypeServices.get_employee_type_by_id(employee_type_id)
-            employee = EmployeeServices.create_employee(first_name, last_name, user_id, employee_type_id)
+            employee = EmployeeServices.create_employee(user_id, employee_type_id)
             return employee
         except EmployeeTypeNotFoundException as e:
             raise HTTPException(status_code=e.code, detail=e.message)

@@ -10,10 +10,11 @@ class UserController:
     This class contains static methods that handle user-related operations."""
 
     @staticmethod
-    def create_user(name: str, email: str, telephone_number: str, password: str, address: str):
+    def create_user(first_name: str, last_name: str, email: str, telephone_number: str, password: str, address: str):
         """Create a new user.
 
-        :param name: Name of the user.
+        :param first_name: Name of the user.
+        :param last_name: Last name of the user.
         :param email: Email of the user.
         :param telephone_number: Telephone_number of the user.
         :param password: Password of the user.
@@ -22,7 +23,8 @@ class UserController:
         :raises HTTPException: In case of any error while creating the user, an HTTPException will be
         raised with a status code and detail message."""
         try:
-            user = UserServices.create_user(name=name, email=email, telephone_number=telephone_number,
+            user = UserServices.create_user(first_name=first_name, last_name=last_name, email=email,
+                                            telephone_number=telephone_number,
                                             password=password, address=address)
             return user
         except IntegrityError:
@@ -31,10 +33,12 @@ class UserController:
             raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
-    def create_super_user(name: str, email: str, telephone_number: str, password: str, address: str):
+    def create_super_user(first_name: str, last_name: str, email: str, telephone_number: str,
+                          password: str, address: str):
         """Create a new superuser.
 
-        :param name: Name of the user.
+        :param first_name: Name of the user.
+        :param last_name: Last name of the user.
         :param email: Email of the user.
         :param telephone_number: Telephone_number of the user.
         :param password: Password of the user.
@@ -43,7 +47,8 @@ class UserController:
         :raises HTTPException: In case of any error while creating the superuser,
         an HTTPException will be raised with a status code and detail message."""
         try:
-            user = UserServices.create_super_user(name=name, email=email, telephone_number=telephone_number,
+            user = UserServices.create_super_user(first_name=first_name, last_name=last_name, email=email,
+                                                  telephone_number=telephone_number,
                                                   password=password, address=address)
             return user
         except IntegrityError as e:

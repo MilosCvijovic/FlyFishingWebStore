@@ -4,18 +4,16 @@ from app.users.repository.customer_repository import CustomerRepository
 
 class CustomerServices:
     @staticmethod
-    def create_customer(first_name, last_name, user_id):
+    def create_customer(user_id):
         """Creates an employee in the database.
 
-        :param first_name: The first name of the customer.
-        :param last_name: The last name of the customer.
         :param user_id: The ID of the user.
         :return: The ID of the newly created customer.
         :raises: Exception"""
         try:
             with SessionLocal() as db:
                 customer_repository = CustomerRepository(db)
-                return customer_repository.create_customer(first_name, last_name, user_id)
+                return customer_repository.create_customer(user_id)
         except Exception as e:
             raise e
 

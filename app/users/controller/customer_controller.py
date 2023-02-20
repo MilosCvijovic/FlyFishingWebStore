@@ -8,17 +8,15 @@ class CustomerController:
     """The CustomerController class is responsible for managing the creation of customers."""
 
     @staticmethod
-    def create_customer(first_name, last_name, user_id):
+    def create_customer(user_id):
         """Create a new customer.
 
-        :param first_name: The first name of the customer.
-        :param last_name: The last name of the customer.
         :param user_id: The ID of the user associated with the customer.
         :return: The newly created employee.
         :raises: HTTPException with status code 500.
                  HTTPException with status code 404 in case the customer type with specified id does not exist."""
         try:
-            customer = CustomerServices.create_customer(first_name, last_name, user_id)
+            customer = CustomerServices.create_customer(user_id)
             return customer
         except CustomerExistsException as e:
             raise HTTPException(status_code=e.code, detail=e.message)

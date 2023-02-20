@@ -1,8 +1,8 @@
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.users.exceptions import CustomerNotFoundException
-from app.users.models import Customer
+from app.users.exceptions import CustomerNotFoundException, UserNotFoundException
+from app.users.models import Customer, User
 
 
 class CustomerRepository:
@@ -13,18 +13,17 @@ class CustomerRepository:
         :param db: The database session to be used for database operations."""
         self.db = db
 
-    def create_customer(self, first_name, last_name, user_id):
+    def create_customer(self, user_id):
         """Creates a new customer.
 
-        :param first_name: The first name of the customer.
-        :param last_name: The last name of the customer.
         :param user_id: The ID of the user associated with the customer.
 
         :return: The newly created customer.
 
         :raises: IntegrityError if there is a conflict with the unique constraints in the database."""
         try:
-            customer = Customer(first_name=first_name, last_name=last_name, user_id=user_id)
+            user = self.db.query(User).filter(User.user_id == user_id).first()  # TODO how to fix this
+            customer = Customer(first_name=user.first_name, last_name=user.last_name, user_id=user_id)
             self.db.add(customer)
             self.db.commit()
             self.db.refresh(customer)
@@ -83,12 +82,21 @@ class CustomerRepository:
             if customer is None:
                 raise CustomerNotFoundException(f"Customer with provided ID: {customer_id} not found.", 400)
             if first_name is not None:
-                customer.name = first_name
+                customer.first_name = first_name
             if last_name is not None:
                 customer.last_name = last_name
             if user_id is not None:
                 customer.user_id = user_id
             self.db.add(customer)
+            if user_id is not None:
+                user = self.db.query(User).filter(User.user_id == user_id).first()
+                if user is None:
+                    raise UserNotFoundException(f"User with provided ID: {user_id} not found.", 400)
+                if first_name is not None:
+                    user.first_name = first_name
+                if last_name is not None:
+                    user.last_name = last_name
+                self.db.add(user)
             self.db.commit()
             self.db.refresh(customer)
             return customer

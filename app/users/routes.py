@@ -9,12 +9,14 @@ user_router = APIRouter(tags=["users"], prefix="/api/users")
 
 @user_router.post("/add-new-user", response_model=UserSchema)
 def create_user(user: UserSchemaIn):
-    return UserController.create_user(user.name, user.email, user.telephone_number, user.password, user.address)
+    return UserController.create_user(user.first_name, user.last_name, user.email, user.telephone_number,
+                                      user.password, user.address)
 
 
 @user_router.post("/add-new-super-user", response_model=UserSchema)
 def create_super_user(user: UserSchemaIn):
-    return UserController.create_super_user(user.name, user.email, user.telephone_number, user.password, user.address)
+    return UserController.create_super_user(user.first_name, user.last_name, user.email, user.telephone_number,
+                                            user.password, user.address)
 
 
 @user_router.post("/login")
@@ -29,7 +31,6 @@ def update_user_is_active(user_id: str, is_active: bool):
 
 @user_router.put("/update/is_superuser", response_model=UserSchema)
 def update_user_is_super_user(user_id: str, is_superuser: bool):
-    is_superuser = True if is_superuser == 1 else False
     return UserController.update_user_is_super_user(user_id=user_id, is_superuser=is_superuser)
 
 
@@ -82,8 +83,7 @@ employee_router = APIRouter(tags=["employee"], prefix="/api/employees")
 @employee_router.post("/add-new-employee", response_model=EmployeeSchema,
                       dependencies=[Depends(JWTBearer("super_user"))])
 def create_employee(employee: EmployeeSchemaIn):
-    return EmployeeController.create_employee(employee.first_name, employee.last_name, employee.user_id,
-                                              employee.employee_type_id)
+    return EmployeeController.create_employee(employee.user_id, employee.employee_type_id)
 
 
 @employee_router.get("/id", response_model=EmployeeSchema)
@@ -118,7 +118,7 @@ customer_router = APIRouter(tags=["customer"], prefix="/api/customers")
 
 @customer_router.post("/add-new-customer", response_model=CustomerSchema)
 def create_customer(customer: CustomerSchemaIn):
-    return CustomerController.create_customer(customer.first_name, customer.last_name, customer.user_id)
+    return CustomerController.create_customer(customer.user_id)
 
 
 @customer_router.get("/id", response_model=CustomerSchema)

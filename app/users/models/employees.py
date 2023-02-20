@@ -13,6 +13,7 @@ class Employee(Base):
     :param employee_type_id: String representing ID of the employee type, foreign key to the 'employee_type' table"""
     __tablename__ = "employees"
     employee_id = Column(String(50), primary_key=True, default=uuid4, autoincrement=False)
+
     first_name = Column(String(50))
     last_name = Column(String(50))
 

@@ -10,10 +10,11 @@ from app.users.exceptions import UserInvalidPassword
 class UserServices:
 
     @staticmethod
-    def create_user(name: str, email: str, telephone_number: str, password: str, address: str):
+    def create_user(first_name: str, last_name: str, email: str, telephone_number: str, password: str, address: str):
         """Creates a new user with the specified name, email, password and address.
 
-        :param name: name of the user
+        :param first_name: Name of the user.
+        :param last_name: Last name of the user.
         :param email: email address of the user
         :param telephone_number: telephone_number of the user
         :param password: password of the user
@@ -24,16 +25,19 @@ class UserServices:
             try:
                 user_repository = UserRepository(db)
                 hashed_password = hashlib.sha256(bytes(password, "utf-8")).hexdigest()
-                return user_repository.create_user(name=name, email=email, telephone_number=telephone_number,
-                                                   password=hashed_password, address=address)
+                return user_repository.create_user(first_name=first_name, last_name=last_name, email=email,
+                                                   telephone_number=telephone_number, password=hashed_password,
+                                                   address=address)
             except Exception as e:
                 raise e
 
     @staticmethod
-    def create_super_user(name: str, email: str, telephone_number: str, password: str, address: str):
+    def create_super_user(first_name: str, last_name: str, email: str, telephone_number: str,
+                          password: str, address: str):
         """Creates a new superuser with the specified name, email, password and address.
 
-        :param name: name of the user
+        :param first_name: Name of the user.
+        :param last_name: Last name of the user.
         :param email: email address of the user
         :param telephone_number: telephone_number of the user
         :param password: password of the user
@@ -44,7 +48,8 @@ class UserServices:
             try:
                 user_repository = UserRepository(db)
                 hashed_password = hashlib.sha256(bytes(password, "utf-8")).hexdigest()
-                return user_repository.create_super_user(name=name, email=email, telephone_number=telephone_number,
+                return user_repository.create_super_user(first_name=first_name, last_name=last_name, email=email,
+                                                         telephone_number=telephone_number,
                                                          password=hashed_password, address=address)
             except Exception as e:
                 raise e
