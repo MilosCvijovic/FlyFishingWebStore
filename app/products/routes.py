@@ -1,36 +1,64 @@
 from fastapi import APIRouter, Depends
 
-from app.products.controller import RodController, ReelController, LineController, FlyController
+from app.products.controller import RodController, ReelController, LineController, FlyController, ProductController
 from app.products.controller.product_type_controller import ProductTypeController
 from app.products.schemas import *
 
-product_router = APIRouter(tags=["products"], prefix="/api/products")
+product_type_router = APIRouter(tags=["product_types"], prefix="/api/product_types")
 
 
-@product_router.post("/add-new-product", response_model=ProductTypeSchema)
-def create_product_type(product: ProductTypeSchemaIn):
-    return ProductTypeController.create_product_type(product.product_type)
+@product_type_router.post("/add-new-product_type", response_model=ProductTypeSchema)
+def create_product_type(product_type: ProductTypeSchemaIn):
+    return ProductTypeController.create_product_type(product_type.product_type)
 
 
-@product_router.get("/id", response_model=ProductTypeSchema)
+@product_type_router.get("/id", response_model=ProductTypeSchema)
 def get_product_type_by_id(product_type_id: str):
     return ProductTypeController.get_product_type_by_id(product_type_id)
 
 
-@product_router.get("/get-all-products", response_model=list[ProductTypeSchema])
+@product_type_router.get("/get-all-product_types", response_model=list[ProductTypeSchema])
 def get_all_product_types():
     return ProductTypeController.get_all_product_types()
 
 
-@product_router.put("/update-product", response_model=ProductTypeSchema)
+@product_type_router.put("/update-product_type", response_model=ProductTypeSchema)
 def update_product_type(product_type_id: str, product_type: str):
     return ProductTypeController.update_product_type(product_type_id=product_type_id,
                                                      product_type=product_type)
 
 
-@product_router.delete("/")
+@product_type_router.delete("/")
 def delete_product_type_by_id(product_type_id: str):
     return ProductTypeController.delete_product_type_by_id(product_type_id=product_type_id)
+
+
+product_router = APIRouter(tags=["products"], prefix="/api/products")
+
+
+@product_router.post("/add-new-product", response_model=ProductSchema)
+def create_product_type(product: ProductSchemaIn):
+    return ProductController.create_new_product(brand=product.brand, model=product.model, price=product.price)
+
+
+@product_router.get("/id", response_model=ProductSchema)
+def get_product_by_id(product_id: str):
+    return ProductController.get_product_by_id(product_id)
+
+
+@product_router.get("/get-all-products", response_model=list[ProductSchema])
+def get_all_products():
+    return ProductController.get_all_products()
+
+
+@product_router.put("/update-product", response_model=ProductSchema)
+def update_product(product_id: str, brand: str, model: str, price: int):
+    return ProductController.update_product(product_id=product_id, brand=brand, model=model, price=price)
+
+
+@product_router.delete("/")
+def delete_product_by_id(product_id: str):
+    return ProductController.delete_product_by_id(product_id=product_id)
 
 
 rod_router = APIRouter(tags=["rod"], prefix="/api/rods")
