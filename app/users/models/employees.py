@@ -28,3 +28,21 @@ class Employee(Base):
         self.last_name = last_name
         self.user_id = user_id
         self.employee_type_id = employee_type_id
+
+    def __eq__(self, other):
+        if self.first_name != other.first_name:
+            return False
+        if self.last_name != other.last_name:
+            return False
+        if self.employee_type_id != other.employee_type_id:
+            return False
+        return True
+
+    def __ne__(self, other):
+        if self.first_name == other.first_name:
+            return False
+        if self.last_name == other.last_name:
+            return False
+        if self.employee_type_id == other.employee_type_id:
+            return False
+        return True

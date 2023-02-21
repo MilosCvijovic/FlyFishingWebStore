@@ -191,7 +191,7 @@ fly_router = APIRouter(tags=["fly"], prefix="/api/flies")
 def create_new_fly(fly: FlySchemaIn):
     return FlyController.create_new_fly(product_type_id=fly.product_type_id, product_id=fly.product_id,
                                         brand=fly.brand, model=fly.model,
-                                        length=fly.length, weight=fly.weight, AFTM=fly.AFTM, price=fly.price,
+                                        length=fly.length, weight=fly.weight, price=fly.price,
                                         quantity=fly.quantity, description=fly.description, in_stock=fly.in_stock)
 
 
@@ -217,9 +217,9 @@ def delete_fly_by_id(fly_id: str):
 
 @fly_router.put("/update-fly", response_model=FlySchema)
 def update_fly(fly_id: str, brand: str = None, model: str = None, length: int = None,
-               weight: int = None, AFTM: str = None, price: int = None, quantity: int = None,
+               weight: int = None, price: int = None, quantity: int = None,
                description: str = None, in_stock: bool = None, product_id: str = None, product_type_id: str = None):
     return FlyController.update_fly(fly_id=fly_id, brand=brand, model=model, length=length,
-                                    weight=weight, AFTM=AFTM, price=price, quantity=quantity,
+                                    weight=weight, price=price, quantity=quantity,
                                     description=description, in_stock=in_stock, product_id=product_id,
                                     product_type_id=product_type_id)

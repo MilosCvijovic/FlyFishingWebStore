@@ -30,3 +30,21 @@ class Customer(Base):
         self.first_name = first_name
         self.last_name = last_name
         self.user_id = user_id
+
+    def __eq__(self, other):
+        if self.first_name != other.first_name:
+            return False
+        if self.last_name != other.last_name:
+            return False
+        if self.user_id != other.user_id:
+            return False
+        return True
+
+    def __ne__(self, other):
+        if self.first_name == other.first_name:
+            return False
+        if self.last_name == other.last_name:
+            return False
+        if self.user_id == other.user_id:
+            return False
+        return True

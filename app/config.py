@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     USER_SECRET: str
     ALGORITHM: str
 
+    DB_NAME_TEST: str
+
     class Config:
         env_file = './.env'
 
