@@ -149,4 +149,3 @@ class TestProductTypeRepo(TestClass):
             all_flies = fly_repository.get_all_flies()
 
             assert not len(all_flies) != 1
-

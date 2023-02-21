@@ -6,6 +6,30 @@ from uuid import uuid4
 
 
 class Fly(Base):
+    """
+        A class representing a fly product in the inventory.
+
+        :param brand: The brand of the fly.
+        :type brand: str
+        :param model: The model of the fly.
+        :type model: str
+        :param length: The length of the fly.
+        :type length: int
+        :param weight: The weight of the fly.
+        :type weight: int
+        :param price: The price of the fly.
+        :type price: int
+        :param quantity: The quantity of the fly in stock.
+        :type quantity: int
+        :param description: A description of the fly.
+        :type description: str
+        :param in_stock: Whether the fly is in stock or not.
+        :type in_stock: bool
+        :param product_id: The ID of the product associated with the fly.
+        :type product_id: str
+        :param product_type_id: The ID of the product type associated with the fly.
+        :type product_type_id: str
+        """
     __tablename__ = "flies"
     fly_id = Column(String(50), primary_key=True, default=uuid4, autoincrement=False)
     brand = Column(String(50))
@@ -25,6 +49,30 @@ class Fly(Base):
 
     def __init__(self, brand: str, model: str, length: int, weight: int, price: int,
                  quantity: int, description: str, in_stock: bool, product_id: str, product_type_id: str):
+        """
+            Initializes a new instance of the Fly class.
+
+            :param brand: The brand of the fly.
+            :type brand: str
+            :param model: The model of the fly.
+            :type model: str
+            :param length: The length of the fly.
+            :type length: int
+            :param weight: The weight of the fly.
+            :type weight: int
+            :param price: The price of the fly.
+            :type price: int
+            :param quantity: The quantity of the fly in stock.
+            :type quantity: int
+            :param description: A description of the fly.
+            :type description: str
+            :param in_stock: Whether the fly is in stock or not.
+            :type in_stock: bool
+            :param product_id: The ID of the product associated with the fly.
+            :type product_id: str
+            :param product_type_id: The ID of the product type associated with the fly.
+            :type product_type_id: str
+            """
         self.brand = brand
         self.model = model
         self.length = length
