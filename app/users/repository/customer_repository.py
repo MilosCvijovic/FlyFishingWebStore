@@ -22,7 +22,7 @@ class CustomerRepository:
 
         :raises: IntegrityError if there is a conflict with the unique constraints in the database."""
         try:
-            user = self.db.query(User).filter(User.user_id == user_id).first()  # TODO how to fix this
+            user = self.db.query(User).filter(User.user_id == user_id).first()
             customer = Customer(first_name=user.first_name, last_name=user.last_name, user_id=user_id)
             self.db.add(customer)
             self.db.commit()

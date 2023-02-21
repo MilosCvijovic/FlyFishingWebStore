@@ -45,6 +45,7 @@ class ProductTypeRepository:
             self.db.add(product)
             self.db.commit()
             self.db.refresh(product)
+            return product
         except Exception as e:
             raise e
 

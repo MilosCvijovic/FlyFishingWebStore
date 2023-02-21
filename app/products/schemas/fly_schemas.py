@@ -11,7 +11,6 @@ class FlySchema(BaseModel):
     model: str
     length: int
     weight: int
-    AFTM: str
     price: int
     quantity: int
     description: Optional[str]
@@ -29,7 +28,6 @@ class FlySchemaIn(BaseModel):
     model: str
     length: int
     weight: int
-    AFTM: str
     price: int
     quantity: int
     description: Optional[str]

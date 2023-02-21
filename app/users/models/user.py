@@ -25,3 +25,45 @@ class User(Base):
         self.address = address
         self.is_active = is_active
         self.is_superuser = is_superuser
+
+    def __eq__(self, other):
+        if self.user_id != other.user_id:
+            return False
+        if self.first_name != other.first_name:
+            return False
+        if self.last_name != other.last_name:
+            return False
+        if self.email != other.email:
+            return False
+        if self.telephone_number != other.telephone_number:
+            return False
+        if self.password != other.password:
+            return False
+        if self.address != other.address:
+            return False
+        if self.is_active != other.is_active:
+            return False
+        if self.is_superuser != other.is_superuser:
+            return False
+        return True
+
+    def __ne__(self, other):
+        if self.user_id == other.user_id:
+            return False
+        if self.first_name == other.first_name:
+            return False
+        if self.last_name == other.last_name:
+            return False
+        if self.email == other.email:
+            return False
+        if self.telephone_number == other.telephone_number:
+            return False
+        if self.password == other.password:
+            return False
+        if self.address == other.address:
+            return False
+        if self.is_active == other.is_active:
+            return False
+        if self.is_superuser == other.is_superuser:
+            return False
+        return True
