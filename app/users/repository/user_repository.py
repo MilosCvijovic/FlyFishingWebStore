@@ -33,7 +33,8 @@ class UserRepository:
         except IntegrityError as e:
             raise e
 
-    def create_super_user(self, first_name: str, last_name: str, email: str, telephone_number: str, password: str, address: str):
+    def create_super_user(self, first_name: str, last_name: str, email: str, telephone_number: str, password: str,
+                          address: str):
         """Create a new User object with superuser privileges.
 
         :param first_name: Name of the user.

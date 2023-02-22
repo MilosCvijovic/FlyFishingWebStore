@@ -1,9 +1,3 @@
-import time
-from typing import Dict
-
-import jwt
-
-from app.config import settings
 from fastapi import Request, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 

@@ -11,8 +11,6 @@ class EmployeeController:
     def create_employee(user_id, employee_type_id):
         """Create a new employee.
 
-        :param first_name: The first name of the employee.
-        :param last_name: The last name of the employee.
         :param user_id: The ID of the user associated with the employee.
         :param employee_type_id: The ID of the employee type.
 

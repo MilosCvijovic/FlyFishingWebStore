@@ -3,6 +3,7 @@ from pydantic import UUID4
 
 
 class CartItemSchema(BaseModel):
+    """Schema for CartItem model with fields that are returned in API responses."""
     cart_id: UUID4
     quantity: int
     price: int
@@ -16,6 +17,7 @@ class CartItemSchema(BaseModel):
 
 
 class CartItemSchemaIn(BaseModel):
+    """Schema for CartItem model with fields that are accepted in API requests."""
     quantity: int
     product_id: str
     shopping_cart_id: str

@@ -2,7 +2,6 @@ from sqlalchemy.exc import IntegrityError
 
 from app.products.exceptions import ProductTypeNotFoundException
 from app.products.services.product_type_service import ProductTypeServices
-from app.users.services import UserServices, signJWT
 from fastapi import HTTPException, Response
 
 

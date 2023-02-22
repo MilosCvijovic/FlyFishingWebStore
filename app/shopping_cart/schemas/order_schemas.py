@@ -1,11 +1,8 @@
-from typing import List
-
 from pydantic import BaseModel, UUID4
-
-from app.shopping_cart.schemas import CartItemSchema
 
 
 class OrderSchema(BaseModel):
+    """Schema class for orders retrieved from the database."""
     order_id: UUID4
     shopping_cart_id: str
     sent: bool = False
@@ -15,6 +12,7 @@ class OrderSchema(BaseModel):
 
 
 class OrderSchemaIn(BaseModel):
+    """Schema class for incoming order data to be processed."""
     shopping_cart_id: str
 
     class Config:
@@ -22,6 +20,7 @@ class OrderSchemaIn(BaseModel):
 
 
 class OrderSchemaOut(BaseModel):
+    """Schema class for outgoing order data returned to the client."""
     order_id: UUID4
     sent: bool = False
 

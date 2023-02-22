@@ -7,6 +7,7 @@ from app.shopping_cart.schemas import CartItemSchema
 
 
 class ShoppingCartSchema(BaseModel):
+    """Schema class for a shopping cart."""
     shopping_cart_id: UUID4
     customer_id: str
 
@@ -15,6 +16,7 @@ class ShoppingCartSchema(BaseModel):
 
 
 class ShoppingCartSchemaIn(BaseModel):
+    """Schema class for creating a shopping cart."""
     customer_id: str
 
     class Config:
@@ -22,6 +24,7 @@ class ShoppingCartSchemaIn(BaseModel):
 
 
 class ShoppingCartSchemaOut(BaseModel):
+    """Schema class for retrieving a shopping cart."""
     shopping_cart_id: str
     customer_id: str
     cart_items: List[CartItemSchema] = []

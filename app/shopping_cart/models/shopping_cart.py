@@ -6,6 +6,9 @@ from uuid import uuid4
 
 
 class ShoppingCart(Base):
+    """
+       A class representing a shopping cart in the system.
+       """
     __tablename__ = "shopping_carts"
     shopping_cart_id = Column(String(50), primary_key=True, default=uuid4, autoincrement=False)
 
@@ -16,4 +19,10 @@ class ShoppingCart(Base):
     cart_items = relationship("CartItem", back_populates="shopping_cart")
 
     def __init__(self, customer_id: str):
+        """
+            Initialize a new instance of the ShoppingCart class.
+
+            :param customer_id: The ID of the customer associated with the shopping cart.
+            :raises: None
+            """
         self.customer_id = customer_id

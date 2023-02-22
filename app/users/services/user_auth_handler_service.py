@@ -28,7 +28,8 @@ def decodeJWT(token: str) -> dict:
     """This function decodes the JWT and returns the claims contained in it, if the token has not expired.
 
     :param token: The JWT to be decoded.
-    :return: A dictionary containing the claims in the JWT, or an empty dictionary if the token is invalid or expired."""
+    :return: A dictionary containing the claims in the JWT, or an empty dictionary if the
+    token is invalid or expired."""
     try:
         decoded_token = jwt.decode(token, USER_SECRET, algorithms=[JWT_ALGORITHM])
         return decoded_token if decoded_token["expires"] >= time.time() else None

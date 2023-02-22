@@ -1,6 +1,5 @@
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
-from typing import Optional
 
 from app.users.exceptions import *
 from app.users.models import Employee, User
@@ -17,8 +16,6 @@ class EmployeeRepository:
     def create_employee(self, user_id, employee_type_id):
         """Create a new employee in the database.
 
-        :param first_name: The first name of the employee
-        :param last_name: The last name of the employee
         :param employee_type_id: The employee type ID of the employee
         :param user_id: The user ID of the employee
 

@@ -3,32 +3,36 @@ from fastapi import APIRouter, Depends
 from app.products.controller import RodController, ReelController, LineController, FlyController, ProductController
 from app.products.controller.product_type_controller import ProductTypeController
 from app.products.schemas import *
+from app.users.controller import JWTBearer
 
 product_type_router = APIRouter(tags=["product_types"], prefix="/api/product_types")
 
 
-@product_type_router.post("/add-new-product_type", response_model=ProductTypeSchema)
+@product_type_router.post("/add-new-product_type", response_model=ProductTypeSchema,
+                          dependencies=[Depends(JWTBearer("super_user"))])
 def create_product_type(product_type: ProductTypeSchemaIn):
     return ProductTypeController.create_product_type(product_type.product_type)
 
 
-@product_type_router.get("/id", response_model=ProductTypeSchema)
+@product_type_router.get("/id", response_model=ProductTypeSchema, dependencies=[Depends(JWTBearer("super_user"))])
 def get_product_type_by_id(product_type_id: str):
     return ProductTypeController.get_product_type_by_id(product_type_id)
 
 
-@product_type_router.get("/get-all-product_types", response_model=list[ProductTypeSchema])
+@product_type_router.get("/get-all-product_types", response_model=list[ProductTypeSchema],
+                         dependencies=[Depends(JWTBearer("super_user"))])
 def get_all_product_types():
     return ProductTypeController.get_all_product_types()
 
 
-@product_type_router.put("/update-product_type", response_model=ProductTypeSchema)
+@product_type_router.put("/update-product_type", response_model=ProductTypeSchema,
+                         dependencies=[Depends(JWTBearer("super_user"))])
 def update_product_type(product_type_id: str, product_type: str):
     return ProductTypeController.update_product_type(product_type_id=product_type_id,
                                                      product_type=product_type)
 
 
-@product_type_router.delete("/")
+@product_type_router.delete("/", dependencies=[Depends(JWTBearer("super_user"))])
 def delete_product_type_by_id(product_type_id: str):
     return ProductTypeController.delete_product_type_by_id(product_type_id=product_type_id)
 
@@ -36,8 +40,8 @@ def delete_product_type_by_id(product_type_id: str):
 product_router = APIRouter(tags=["products"], prefix="/api/products")
 
 
-@product_router.post("/add-new-product", response_model=ProductSchema)
-def create_product_type(product: ProductSchemaIn):
+@product_router.post("/add-new-product", response_model=ProductSchema, dependencies=[Depends(JWTBearer("super_user"))])
+def create_product(product: ProductSchemaIn):
     return ProductController.create_new_product(brand=product.brand, model=product.model, price=product.price)
 
 
@@ -51,12 +55,12 @@ def get_all_products():
     return ProductController.get_all_products()
 
 
-@product_router.put("/update-product", response_model=ProductSchema)
+@product_router.put("/update-product", response_model=ProductSchema, dependencies=[Depends(JWTBearer("super_user"))])
 def update_product(product_id: str, brand: str, model: str, price: int):
     return ProductController.update_product(product_id=product_id, brand=brand, model=model, price=price)
 
 
-@product_router.delete("/")
+@product_router.delete("/", dependencies=[Depends(JWTBearer("super_user"))])
 def delete_product_by_id(product_id: str):
     return ProductController.delete_product_by_id(product_id=product_id)
 
@@ -64,7 +68,7 @@ def delete_product_by_id(product_id: str):
 rod_router = APIRouter(tags=["rod"], prefix="/api/rods")
 
 
-@rod_router.post("/add-new-rod", response_model=RodSchema)
+@rod_router.post("/add-new-rod", response_model=RodSchema, dependencies=[Depends(JWTBearer("super_user"))])
 def create_new_rod(rod: RodSchemaIn):
     return RodController.create_new_rod(product_type_id=rod.product_type_id, brand=rod.brand, model=rod.model,
                                         length=rod.length, weight=rod.weight, AFTM=rod.AFTM, price=rod.price,
@@ -87,12 +91,12 @@ def get_all_rods():
     return RodController.get_all_rods()
 
 
-@rod_router.delete("/")
+@rod_router.delete("/", dependencies=[Depends(JWTBearer("super_user"))])
 def delete_rod_by_id(rod_id: str):
     return RodController.delete_rod_by_id(rod_id=rod_id)
 
 
-@rod_router.put("/update-rod", response_model=RodSchema)
+@rod_router.put("/update-rod", response_model=RodSchema, dependencies=[Depends(JWTBearer("super_user"))])
 def update_rod(rod_id: str, brand: str = None, model: str = None, length: int = None,
                weight: int = None, AFTM: str = None, price: int = None, quantity: int = None,
                description: str = None, in_stock: bool = None, product_id: str = None, product_type_id: str = None):
@@ -105,7 +109,7 @@ def update_rod(rod_id: str, brand: str = None, model: str = None, length: int = 
 reel_router = APIRouter(tags=["reel"], prefix="/api/reels")
 
 
-@reel_router.post("/add-new-reel", response_model=ReelSchema)
+@reel_router.post("/add-new-reel", response_model=ReelSchema, dependencies=[Depends(JWTBearer("super_user"))])
 def create_new_reel(reel: ReelSchemaIn):
     return ReelController.create_new_reel(product_type_id=reel.product_type_id, product_id=reel.product_id,
                                           brand=reel.brand, model=reel.model,
@@ -128,12 +132,12 @@ def get_all_reels():
     return ReelController.get_all_reels()
 
 
-@reel_router.delete("/")
+@reel_router.delete("/", dependencies=[Depends(JWTBearer("super_user"))])
 def delete_reel_by_id(reel_id: str):
     return ReelController.delete_reel_by_id(reel_id=reel_id)
 
 
-@reel_router.put("/update-reel", response_model=ReelSchema)
+@reel_router.put("/update-reel", response_model=ReelSchema, dependencies=[Depends(JWTBearer("super_user"))])
 def update_reel(reel_id: str, brand: str = None, model: str = None,
                 weight: int = None, AFTM: str = None, price: int = None, quantity: int = None,
                 description: str = None, in_stock: bool = None, product_id: str = None, product_type_id: str = None):
@@ -146,7 +150,7 @@ def update_reel(reel_id: str, brand: str = None, model: str = None,
 line_router = APIRouter(tags=["line"], prefix="/api/lines")
 
 
-@line_router.post("/add-new-line", response_model=LineSchema)
+@line_router.post("/add-new-line", response_model=LineSchema, dependencies=[Depends(JWTBearer("super_user"))])
 def create_new_line(line: LineSchemaIn):
     return LineController.create_new_line(product_type_id=line.product_type_id, product_id=line.product_id,
                                           brand=line.brand, model=line.model,
@@ -169,12 +173,12 @@ def get_all_lines():
     return LineController.get_all_lines()
 
 
-@line_router.delete("/")
+@line_router.delete("/", dependencies=[Depends(JWTBearer("super_user"))])
 def delete_line_by_id(line_id: str):
     return LineController.delete_line_by_id(line_id=line_id)
 
 
-@line_router.put("/update-line", response_model=LineSchema)
+@line_router.put("/update-line", response_model=LineSchema, dependencies=[Depends(JWTBearer("super_user"))])
 def update_line(line_id: str, brand: str = None, model: str = None, length: int = None,
                 AFTM: str = None, price: int = None, quantity: int = None,
                 description: str = None, in_stock: bool = None, product_id: str = None, product_type_id: str = None):
@@ -187,7 +191,7 @@ def update_line(line_id: str, brand: str = None, model: str = None, length: int 
 fly_router = APIRouter(tags=["fly"], prefix="/api/flies")
 
 
-@fly_router.post("/add-new-fly", response_model=FlySchema)
+@fly_router.post("/add-new-fly", response_model=FlySchema, dependencies=[Depends(JWTBearer("super_user"))])
 def create_new_fly(fly: FlySchemaIn):
     return FlyController.create_new_fly(product_type_id=fly.product_type_id, product_id=fly.product_id,
                                         brand=fly.brand, model=fly.model,
@@ -215,7 +219,7 @@ def delete_fly_by_id(fly_id: str):
     return FlyController.delete_fly_by_id(fly_id=fly_id)
 
 
-@fly_router.put("/update-fly", response_model=FlySchema)
+@fly_router.put("/update-fly", response_model=FlySchema, dependencies=[Depends(JWTBearer("super_user"))])
 def update_fly(fly_id: str, brand: str = None, model: str = None, length: int = None,
                weight: int = None, price: int = None, quantity: int = None,
                description: str = None, in_stock: bool = None, product_id: str = None, product_type_id: str = None):

@@ -1,13 +1,15 @@
 from fastapi import APIRouter, Depends
 from app.shopping_cart.controller import CartItemController, ShoppingCartController, OrderController
 from app.shopping_cart.schemas import *
+from app.users.controller import JWTBearer
 
 cart_item_router = APIRouter(tags=["cart_item"], prefix="/api/cart_item")
 
 
 @cart_item_router.post("/add-new-cart-item", response_model=CartItemSchema)
 def create_cart_item(cart_item: CartItemSchemaIn):
-    return CartItemController.create_new_cart_item(quantity=cart_item.quantity, product_id=cart_item.product_id, shopping_cart_id=cart_item.shopping_cart_id)
+    return CartItemController.create_new_cart_item(quantity=cart_item.quantity, product_id=cart_item.product_id,
+                                                   shopping_cart_id=cart_item.shopping_cart_id)
 
 
 @cart_item_router.get("/id", response_model=CartItemSchema)
@@ -15,7 +17,8 @@ def get_cart_item_by_id(cart_id: str):
     return CartItemController.get_cart_item_by_id(cart_id)
 
 
-@cart_item_router.get("/get-all-cart-items", response_model=list[CartItemSchema])
+@cart_item_router.get("/get-all-cart-items", response_model=list[CartItemSchema],
+                      dependencies=[Depends(JWTBearer("super_user"))])
 def get_all_cart_items():
     return CartItemController.get_all_cart_items()
 
@@ -43,17 +46,19 @@ def get_shopping_cart_by_id(shopping_cart_id: str):
     return ShoppingCartController.get_shopping_cart_by_id(shopping_cart_id=shopping_cart_id)
 
 
-@shopping_cart_router.get("/get-all-shopping-carts", response_model=list[ShoppingCartSchemaOut])
+@shopping_cart_router.get("/get-all-shopping-carts", response_model=list[ShoppingCartSchemaOut],
+                          dependencies=[Depends(JWTBearer("super_user"))])
 def get_all_shopping_carts():
     return ShoppingCartController.get_all_shopping_carts()
 
 
-@shopping_cart_router.put("/update-shopping-cart", response_model=ShoppingCartSchema)
+@shopping_cart_router.put("/update-shopping-cart", response_model=ShoppingCartSchema,
+                          dependencies=[Depends(JWTBearer("super_user"))])
 def update_shopping_cart(shopping_cart_id: str, customer_id: str):
     return ShoppingCartController.update_shopping_cart(shopping_cart_id=shopping_cart_id, customer_id=customer_id)
 
 
-@shopping_cart_router.delete("/")
+@shopping_cart_router.delete("/", dependencies=[Depends(JWTBearer("super_user"))])
 def delete_shopping_cart_by_id(shopping_cart_id: str):
     return ShoppingCartController.delete_shopping_cart_by_id(shopping_cart_id=shopping_cart_id)
 
@@ -71,12 +76,12 @@ def get_order_by_id(order_id: str):
     return OrderController.get_order_by_id(order_id)
 
 
-@order_router.get("/get-all-orders", response_model=list[OrderSchema])
+@order_router.get("/get-all-orders", response_model=list[OrderSchema], dependencies=[Depends(JWTBearer("super_user"))])
 def get_all_orders():
     return OrderController.get_all_orders()
 
 
-@order_router.put("/order-sent", response_model=OrderSchemaOut)
+@order_router.put("/order-sent", response_model=OrderSchemaOut, dependencies=[Depends(JWTBearer("super_user"))])
 def mark_order_as_sent(order_id: str, shopping_cart_id: str, sent: bool):
     return OrderController.mark_order_as_sent(order_id=order_id, shopping_cart_id=shopping_cart_id, sent=sent)
 

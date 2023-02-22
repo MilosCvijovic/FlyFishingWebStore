@@ -7,13 +7,13 @@ from app.users.controller.user_auth_controller import JWTBearer
 user_router = APIRouter(tags=["users"], prefix="/api/users")
 
 
-@user_router.post("/add-new-user", response_model=UserSchema)
+@user_router.post("/add-new-user", response_model=UserSchema, dependencies=[Depends(JWTBearer("super_user"))])
 def create_user(user: UserSchemaIn):
     return UserController.create_user(user.first_name, user.last_name, user.email, user.telephone_number,
                                       user.password, user.address)
 
 
-@user_router.post("/add-new-super-user", response_model=UserSchema)
+@user_router.post("/add-new-super-user", response_model=UserSchema, dependencies=[Depends(JWTBearer("super_user"))])
 def create_super_user(user: UserSchemaIn):
     return UserController.create_super_user(user.first_name, user.last_name, user.email, user.telephone_number,
                                             user.password, user.address)
@@ -24,27 +24,27 @@ def login_user(user: UserSchemaLogIn):
     return UserController.login_user(user.email, user.password)
 
 
-@user_router.put("/update/is_active", response_model=UserSchema)
+@user_router.put("/update/is_active", response_model=UserSchema, dependencies=[Depends(JWTBearer("super_user"))])
 def update_user_is_active(user_id: str, is_active: bool):
     return UserController.update_user_is_active(user_id=user_id, is_active=is_active)
 
 
-@user_router.put("/update/is_superuser", response_model=UserSchema)
+@user_router.put("/update/is_superuser", response_model=UserSchema, dependencies=[Depends(JWTBearer("super_user"))])
 def update_user_is_super_user(user_id: str, is_superuser: bool):
     return UserController.update_user_is_super_user(user_id=user_id, is_superuser=is_superuser)
 
 
-@user_router.get("/id", response_model=UserSchema)
+@user_router.get("/id", response_model=UserSchema, dependencies=[Depends(JWTBearer("super_user"))])
 def get_user_by_id(user_id: str):
     return UserController.get_user_by_id(user_id)
 
 
-@user_router.get("/get-all-users", response_model=list[UserSchema])
+@user_router.get("/get-all-users", response_model=list[UserSchema], dependencies=[Depends(JWTBearer("super_user"))])
 def get_all_users():
     return UserController.get_all_users()
 
 
-@user_router.delete("/")
+@user_router.delete("/", dependencies=[Depends(JWTBearer("super_user"))])
 def delete_user_by_id(user_id: str):
     return UserController.delete_user_by_id(user_id)
 
@@ -52,27 +52,29 @@ def delete_user_by_id(user_id: str):
 employee_type_router = APIRouter(tags=["employee-type"], prefix="/api/employee-type")
 
 
-@employee_type_router.post("/add-new-employee-type", response_model=EmployeeTypeSchema)
+@employee_type_router.post("/add-new-employee-type", response_model=EmployeeTypeSchema,
+                           dependencies=[Depends(JWTBearer("super_user"))])
 def create_employee_type(employee_type: EmployeeTypeSchemaIn):
     return EmployeeTypeController.create_employee_type(employee_type.employee_type)
 
 
-@employee_type_router.get("/id", response_model=EmployeeTypeSchema)
+@employee_type_router.get("/id", response_model=EmployeeTypeSchema, dependencies=[Depends(JWTBearer("super_user"))])
 def get_employee_type_by_id(employee_type_id: str):
     return EmployeeTypeController.get_employee_type_by_id(employee_type_id)
 
 
-@employee_type_router.get("/get-all-employee-types", response_model=list[EmployeeTypeSchema])
+@employee_type_router.get("/get-all-employee-types", response_model=list[EmployeeTypeSchema],
+                          dependencies=[Depends(JWTBearer("super_user"))])
 def get_all_employee_types():
     return EmployeeTypeController.get_all_employee_types()
 
 
-@employee_type_router.delete("/")
+@employee_type_router.delete("/", dependencies=[Depends(JWTBearer("super_user"))])
 def delete_employee_type_by_id(employee_type_id: str):
     return EmployeeTypeController.delete_employee_type_by_id(employee_type_id)
 
 
-@employee_type_router.put("/update", response_model=EmployeeTypeSchema)
+@employee_type_router.put("/update", response_model=EmployeeTypeSchema, dependencies=[Depends(JWTBearer("super_user"))])
 def update_employee_type(employee_type_id, employee_type):
     return EmployeeTypeController.update_employee_type(employee_type_id, employee_type)
 
@@ -86,17 +88,19 @@ def create_employee(employee: EmployeeSchemaIn):
     return EmployeeController.create_employee(employee.user_id, employee.employee_type_id)
 
 
-@employee_router.get("/id", response_model=EmployeeSchema)
+@employee_router.get("/id", response_model=EmployeeSchema, dependencies=[Depends(JWTBearer("super_user"))])
 def get_employee_by_id(employee_id: str):
     return EmployeeController.get_employee_by_id(employee_id)
 
 
-@employee_router.get("/get-all-employees", response_model=list[EmployeeSchema])
+@employee_router.get("/get-all-employees", response_model=list[EmployeeSchema],
+                     dependencies=[Depends(JWTBearer("super_user"))])
 def get_all_employees():
     return EmployeeController.get_all_employees()
 
 
-@employee_router.get("/get-employees-by-first-name", response_model=list[EmployeeSchema])
+@employee_router.get("/get-employees-by-first-name", response_model=list[EmployeeSchema],
+                     dependencies=[Depends(JWTBearer("super_user"))])
 def get_employees_by_first_name(first_name):
     return EmployeeController.get_employees_by_first_name(first_name)
 
@@ -126,7 +130,8 @@ def get_customer_by_id(customer_id: str):
     return CustomerController.get_customer_by_id(customer_id)
 
 
-@customer_router.get("/get-all-customers", response_model=list[CustomerSchema])
+@customer_router.get("/get-all-customers", response_model=list[CustomerSchema],
+                     dependencies=[Depends(JWTBearer("super_user"))])
 def get_all_customers():
     return CustomerController.get_all_customers()
 

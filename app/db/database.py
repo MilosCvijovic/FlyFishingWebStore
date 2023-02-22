@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 from app.config import settings
 
 MYSQL_URL = f"{settings.DB_HOST}://{settings.DB_USER}:{settings.DB_PASSWORD}@{settings.DB_HOSTNAME}:" \
-            f"{settings.DB_PORT}/{settings.DB_NAME_TEST}"
+            f"{settings.DB_PORT}/{settings.DB_NAME}"
 
 engine = create_engine(MYSQL_URL, echo=True)
 

@@ -1,7 +1,4 @@
-import codecs
-
 import hashlib
-from app.config import settings
 from app.users.repository.user_repository import UserRepository
 from app.db.database import SessionLocal
 from app.users.exceptions import UserInvalidPassword
